@@ -26,7 +26,6 @@ class dynamics:
         for o in self.nObject:
             return o
 
-
 # create a dynamics
 D = dynamics()
 
