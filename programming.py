@@ -5,46 +5,39 @@ import random
 # create a method for a dynamis
 
 
-class dynamics:
+class Dynamics:
     def __init__(self):
-        self.nObject = []
-        self.d_Object = {}
+        self.nm_model = []
+        self.models = {}
 
-    def addnObject(self, objct):
-        self.nObject.append(objct)
+    def add_nm_model(self, module):
+        self.nm_model.append(objct)
 
-    def addd_Object(self, key, value):
-        self.d_Object[key] = value
+    def add_model(self, nm_model, status):
+        self.model[nm_model] = status
 
-    def getnObject(self):
-        return self.nObject
+    def get_lst_nm_models(self):
+        return self.nm_model
 
-    def getd_Object(self):
-        return self.d_Object
-
-    def shownmObjects(self):
-        for o in self.nObject:
-            return o
+    def get_models(self):
+        return self.models
 
 # create a dynamics
-D = dynamics()
+D = Dynamics()
 
 
 # create a method for each object
-class model:
-    def __init__(self, name, dOfstate, lst):
+class Model:
+    def __init__(self, name, d_aos, lst_aos):
         self.name = name
-        self.dictionary = dOfstate
-        self.list = lst
-
-    def __str__(self):
-        return self.name
+        self.d_aos = d_aos
+        self.lst_aos = lst_aos
 
     def getname(self):
         return self.name
 
     def getD(self):
-        return self.dictionary
+        return self.d_aos
 
     def getL(self):
         return self.list
@@ -54,7 +47,7 @@ class model:
 # CausalFile = open('/Users/hyuga/Documents/iPS_cell_reprogramming/Text/CausalFile.txt', "w")
 
 # open the writing file that you save the numberical data
-ActionFile = open('/Users/hyuga/Documents/iPS_cell_reprogramming/Text/ActionFile.txt', "w")
+network = open('/Users/hyuga/Documents/iPS_cell_reprogramming/Text/ActionFile.txt', "w")
 
 # invoke every file in a folder
 for filename in glob.glob('/Users/hyuga/Dropbox/Regan_Group/toy_model/Andrew_lastmodel_WT/*'):
@@ -182,10 +175,10 @@ for filename in glob.glob('/Users/hyuga/Dropbox/Regan_Group/toy_model/Andrew_las
     p = model(nmOfmodel, dOfstate, lstOfNofAOs)
 
     # add name of the model to the list of the dynamics
-    D.addnObject(nmOfmodel)
+    D.add_nm_model(nmOfmodel)
 
     # add data of the model to the dictionary of the dynamics
-    D.addd_Object(nmOfmodel, p)
+    D.add_model(nmOfmodel, p)
 
     # close the file
     fIn.close()
@@ -194,7 +187,7 @@ for filename in glob.glob('/Users/hyuga/Dropbox/Regan_Group/toy_model/Andrew_las
 # CausalFile.close()
 
 # create a list of all objects in the dynamics
-lst_all_models = D.getnObject()
+lst_all_models = D.get_lst_nm_models()
 
 # dictionary in which keys are nodes and values lists of leading states
 D_nodes = {}
@@ -324,11 +317,12 @@ for i in range(nOFinput):
                 D_nodes[node].append(s)
 
 # close the file that you have the list of numerical states
-ActionFile.close()
+network.close()
 
 # open the file that has all final states
 f_states = open('/Users/hyuga/Documents/iPS_cell_reprogramming/Text/f_states.txt', "w")
 
+# number of node
 i = 0
 
 for node in L_nodes:
@@ -352,4 +346,4 @@ for node in L_nodes:
 
 f_states.close()
 
-print len(L_nodes)
+print (len(L_nodes))
