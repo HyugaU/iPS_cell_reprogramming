@@ -1,20 +1,17 @@
 import glob
 import random
 
-
 # create a method for a dynamis
-
-
 class Dynamics:
     def __init__(self):
         self.nm_model = []
         self.models = {}
 
     def add_nm_model(self, module):
-        self.nm_model.append(objct)
+        self.nm_model.append(module)
 
     def add_model(self, nm_model, status):
-        self.model[nm_model] = status
+        self.models[nm_model] = status
 
     def get_lst_nm_models(self):
         return self.nm_model
@@ -25,66 +22,67 @@ class Dynamics:
 # create a dynamics
 D = Dynamics()
 
-
-# create a method for each object
+# create a method for each model
 class Model:
-    def __init__(self, name, d_aos, lst_aos):
+    def __init__(self, name, d_rls, lst_ams):
         self.name = name
-        self.d_aos = d_aos
-        self.lst_aos = lst_aos
+        self.rls = d_rls
+        self.lst_ams = lst_ams
 
     def getname(self):
         return self.name
 
     def getD(self):
-        return self.d_aos
+        return self.rls
 
     def getL(self):
-        return self.list
+        return self.lst_ams
 
+# create a dynamics
+D = Dynamics()
 
 # open the file that you have the causal relationsions
-# CausalFile = open('/Users/hyuga/Documents/iPS_cell_reprogramming/Text/CausalFile.txt', "w")
+# dynamics = open('/Users/hyuga/Documents/iPS_cell_reprogramming/Text/dynamics.txt', "w")
 
 # open the writing file that you save the numberical data
-network = open('/Users/hyuga/Documents/iPS_cell_reprogramming/Text/ActionFile.txt', "w")
+network = open('/Users/hyuga/Documents/iPS/Text/network.txt', "w")
 
 # invoke every file in a folder
 for filename in glob.glob('/Users/hyuga/Dropbox/Regan_Group/toy_model/Andrew_lastmodel_WT/*'):
 
     # open a file
-    fIn = open(filename, "r")
+    modelfile = open(filename, "r")
 
     # number of the line you are looking at
     n_line = 0
 
-    # make a dictionary of the state
-    dOfstate = {}
+    # make a dictionary of the relationship between the target model and affecting modesl
+    d_rl = {}
 
-    # create dictionaries of sums of output when the affecting object is off and on
-    dOfSoff = {}
-    dOfSon = {}
+    # create dictionaries of sums of output when affecting models is off and on
+    d_outp_off = {}
+    d_outp_on = {}
 
     # make a dictionary of the relationshiop between affecting objects and the target object
-    dOfR = {}
+    d_rls = {}
 
     # you look at each line of the file
-    for aline in fIn:
+    for aline in modelfile:
 
         # the first line
         if n_line == 0:
 
-            # make a list of objects
-            lstOfobjects = aline.split()
+            # make a list of names on first line
+            lst_nm_1line = aline.split()
 
             # name of model
-            nmOfmodel = lstOfobjects[-1]
+            nm_model_file = lst_nm_1line[-1]
 
             # remove the name of model from the list
-            lstOfobjects.pop()
+            lst_nm_1line.pop()
 
-            # create a list of names of affecting objects
-            lstOfNofAOs = lstOfobjects
+            # create a list of names of affecting models
+            lstOfNofAOs = lst_nm_1line
 
             # count number of objects in a file
             nOfkeys = len(lstOfNofAOs)
@@ -97,8 +95,8 @@ for filename in glob.glob('/Users/hyuga/Dropbox/Regan_Group/toy_model/Andrew_las
 
             for ob in lstOfNofAOs:
                 # add the name of the affecting object to the key of the dictionary
-                dOfSoff[ob] = 0
-                dOfSon[ob] = 0
+                d_outp_off[ob] = 0
+                d_outp_on[ob] = 0
 
         # the other line
         elif n_line > 0:
@@ -122,7 +120,7 @@ for filename in glob.glob('/Users/hyuga/Dropbox/Regan_Group/toy_model/Andrew_las
                 key = key + s
 
             # add the output to the dictionary
-            dOfstate[key] = value
+            d_rls[key] = value
 
             # every time you see the affecting object, you check the output of the target object
             for ob in lstOfNofAOs:
@@ -135,11 +133,11 @@ for filename in glob.glob('/Users/hyuga/Dropbox/Regan_Group/toy_model/Andrew_las
 
                 # if the affecting object is off
                 if SofAO == "0":
-                    dOfSoff[ob] += value
+                    d_outp_off[ob] += value
 
                 # if the affeting object is on
                 elif SofAO == "1":
-                    dOfSon[ob] += value
+                    d_outp_on[ob] += value
 
         # add 1 to the count of the line
         n_line += 1
@@ -148,57 +146,67 @@ for filename in glob.glob('/Users/hyuga/Dropbox/Regan_Group/toy_model/Andrew_las
     for ob in lstOfNofAOs:
 
         # if the Sum of the output when the affecing object is off is greater than on
-        if dOfSoff[ob] > dOfSon[ob]:
+        if d_outp_off[ob] > d_outp_on[ob]:
 
             # the dictionary of the relation between the affecting and the target object is 0
-            dOfR[ob] = 0
+            d_rl[ob] = 0
 
         # if the Sum of the output when the affecting object is off is smaller than on
-        elif dOfSoff[ob] < dOfSon[ob]:
+        elif d_outp_off[ob] < d_outp_on[ob]:
 
             # the dictionary of the relation between the affecting and the target object is 1
-            dOfR[ob] = 1
+            d_rl[ob] = 1
 
         # if the Sum of the output when the affecting object is off is equal to when it's on
-        elif dOfSoff[ob] == dOfSon[ob]:
+        elif d_outp_off[ob] == d_outp_on[ob]:
 
             # the dictionary of the relation btween the affecting and the target object is 2
-            dOfR[ob] = 2
+            d_rl[ob] = 2
 
     # #write the relationship between the affecting objects and the target object in the file
-    #    CausalFile.write(ob + "  ")
-    #    CausalFile.write(str(dOfR[ob]) + "  ")
-    #    CausalFile.write(nmOfmodel+ "\n")
-    # CausalFile.write("" + "\n")
+    #    dynamics.write(ob + "  ")
+    #    dynamics.write(str(d_rl[ob]) + "  ")
+    #    dynamics.write(nm_model_file+ "\n")
+    # dynamics.write("" + "\n")
 
     # create a new instance
-    p = model(nmOfmodel, dOfstate, lstOfNofAOs)
+    p = Model(nm_model_file, d_rls, lstOfNofAOs)
 
     # add name of the model to the list of the dynamics
-    D.add_nm_model(nmOfmodel)
+    D.add_nm_model(nm_model_file)
 
     # add data of the model to the dictionary of the dynamics
-    D.add_model(nmOfmodel, p)
+    D.add_model(nm_model_file, p)
 
     # close the file
-    fIn.close()
+    modelfile.close()
 
 ##close the file that you have the causal relations 
-# CausalFile.close()
+# dynamics.close()
 
 # create a list of all objects in the dynamics
 lst_all_models = D.get_lst_nm_models()
 
-# dictionary in which keys are nodes and values lists of leading states
-D_nodes = {}
+# dictionary in which keys are ends and values lists of leading states
+d_ends = {}
 
-# list of nodes
-L_nodes = []
+lst_ends = []
+
+# list of dead
+lst_dead = []
+
+# list of roops
+lst_loops = []
 
 # make a list of all sequence
 lst_all_seq = []
 
-nOFinput = 5
+#if the end is dead or not
+che_loop = True
+
+nOFinput = 10000
+
+count = 0
 
 for i in range(nOFinput):
 
@@ -210,6 +218,9 @@ for i in range(nOFinput):
 
     # create a list of existed states
     lst_Exs = []
+
+    #a loop
+    loop = []
 
     # input the initial state of each object by random chance
     for m in lst_all_models:
@@ -243,7 +254,7 @@ for i in range(nOFinput):
     Wholes = Istate
 
     # the value of the node
-    node = ""
+    end = ""
 
     while WholeS not in lst_Exs:
 
@@ -259,10 +270,10 @@ for i in range(nOFinput):
             pS_AOs = ""
 
             # create a list of names of affecting objects
-            lst_nm_AOs = D.d_Object[m].getL()
+            lst_nm_AOs = D.get_models()[m].getL()
 
             # create a dictionary of the relationship between previous and new state of the object
-            d_pn = D.d_Object[m].getD()
+            d_pn = D.get_models()[m].getD()
 
             # looking at the state of each affecting object
             for ao in lst_nm_AOs:
@@ -272,70 +283,92 @@ for i in range(nOFinput):
                 # conjugate the state of the previous stage
                 pS_AOs += str(pS_AO)
 
-            # create the new state of the object
-            nS_O = d_pn[pS_AOs]
+            # create the new state of the node
+            ns_n = d_pn[pS_AOs]
 
             # update the dictionary of the states of all
-            dOfs[m] = nS_O
+            dOfs[m] = ns_n
 
             # create a new whole state
-            WholeS = WholeS + str(nS_O)
+            WholeS = WholeS + str(ns_n)
 
         # add the state to the list of all sequence
         lst_all_seq.append(WholeS)
 
     # define the final state
-    node = WholeS
+    end = WholeS
+
+    #check the end associate with a loop or dead
+    if end == lst_Exs[-1]:
+        che_loop = False
+
+    else:
+        che_loop = True
+
+        #position of starting point
+        p_star = lst_Exs.index(end)
+
+        for l in lst_Exs[p_star:]:
+            loop.append(l)
 
     # write the inital state on the top-left of the file
-    ActionFile.write(Istate + " ")
+    network.write(Istate + " ")
 
     # find the existed state except initial and final states
     lst_track = lst_Exs[1:-2]
 
     # every time you have the leading state
     for state in lst_track:
-        ActionFile.write(state + "\n")
-        ActionFile.write(state + " ")
+        network.write(state + "\n")
+        network.write(state + " ")
 
     # write the final state on the lower-right of the file
-    ActionFile.write(node + "\n")
-    ActionFile.write("\n")
+    network.write(end + "\n")
+    network.write("\n")
 
     # add the new final state to the list of final states and the dictionary
-    if node not in L_nodes:
-        L_nodes.append(node)
+    if end not in lst_ends:
+        if che_loop == False:
+            lst_dead.append(end)
+        elif che_loop == True:
+            lst_loops.append(loop)
 
-        D_nodes[node] = lst_Exs
+        d_ends[end] = lst_Exs
+        lst_ends.append(end)
 
     # if the final state is already in the list, the leading states are to be stored in the dictionary
-    elif node in L_nodes:
+    elif end in lst_ends:
 
         for s in lst_Exs:
 
-            if s not in D_nodes[node]:
-                D_nodes[node].append(s)
+            if s not in d_ends[end]:
+                d_ends[end].append(s)
+
+    count += 1
+    print (che_loop, count)
 
 # close the file that you have the list of numerical states
 network.close()
 
-# open the file that has all final states
-f_states = open('/Users/hyuga/Documents/iPS_cell_reprogramming/Text/f_states.txt', "w")
+# open the file that has dead states and loops
+deadfile = open('/Users/hyuga/Documents/iPS/Text/deadfile.txt', "w")
+loopfile = open('/Users/hyuga/Documents/iPS/Text/loopfile.txt', "w")
 
-# number of node
+
+# number of end
 i = 0
 
-for node in L_nodes:
+for dead in lst_dead:
 
     # open the file in which you write the numbering of final states
-    tr_states = open('/Users/hyuga/Documents/iPS_cell_reprogramming/Text/nodes/' + str(i) + ".txt", "w")
+    tr_states = open('/Users/hyuga/Documents/iPS/Text/ends/' + str(i) + ".txt", "w")
 
-    tr_states.write(node + "\n")
-    tr_states.write("\n")
+    tr_states.write(dead + "\n")
+    #tr_states.write("\n")
 
-    f_states.write(node + "\n")
+    deadfile.write(dead + "\n")
 
-    for Ls in D_nodes[node]:
+    for Ls in d_ends[dead]:
         tr_states.write(Ls + "\n")
 
     tr_states.write("\n")
@@ -344,6 +377,31 @@ for node in L_nodes:
 
     tr_states.close()
 
-f_states.close()
+deadfile.close()
 
-print (len(L_nodes))
+for loop in lst_loops:
+
+    tr_states = open('/Users/hyuga/Documents/iPS/Text/ends/' + str(i) + ".txt", "w")
+
+    for state in loop:
+
+        tr_states.write(state + "\n")
+        loopfile.write(state + "\n")
+
+    tr_states.write("\n")
+
+    for state in d_ends[loop[0]]:
+        tr_states.write(state + "\n")
+
+    tr_states.write("\n")
+
+    loopfile.write("\n")
+
+    tr_states.close()
+
+    i += 1
+
+loopfile.close()
+
+print (len(lst_ends))
+
