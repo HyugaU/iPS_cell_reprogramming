@@ -45,10 +45,10 @@ D = Dynamics()
 # dynamics = open('/Users/hyuga/Documents/iPS_cell_reprogramming/Text/dynamics.txt', "w")
 
 # open the writing file that you save the numberical data
-network = open('/Users/hyuga/Documents/iPS/Text/network.txt', "w")
+network = open('data/network.txt', "w")
 
 # invoke every file in a folder
-for filename in glob.glob('/Users/hyuga/Dropbox/Regan_Group/toy_model/Andrew_lastmodel_WT/*'):
+for filename in glob.glob('data/toymodel/*'):
 
     # open a file
     modelfile = open(filename, "r")
@@ -234,7 +234,6 @@ for i in range(nOFinput):
         Istate = Istate + str(i)
 
     while Istate in lst_all_seq:
-
         for m in lst_all_models:
             # take input by the module
             i = random.randint(0, 1)
@@ -351,8 +350,8 @@ for i in range(nOFinput):
 network.close()
 
 # open the file that has dead states and loops
-deadfile = open('/Users/hyuga/Documents/iPS/Text/deadfile.txt', "w")
-loopfile = open('/Users/hyuga/Documents/iPS/Text/loopfile.txt', "w")
+deadfile = open('data/deadfile.txt', "w")
+loopfile = open('data/loopfile.txt', "w")
 
 
 # number of end
@@ -361,7 +360,7 @@ i = 0
 for dead in lst_dead:
 
     # open the file in which you write the numbering of final states
-    tr_states = open('/Users/hyuga/Documents/iPS/Text/ends/' + str(i) + ".txt", "w")
+    tr_states = open('data/ends/' + str(i) + ".txt", "w")
 
     tr_states.write(dead + "\n")
     #tr_states.write("\n")
@@ -381,7 +380,7 @@ deadfile.close()
 
 for loop in lst_loops:
 
-    tr_states = open('/Users/hyuga/Documents/iPS/Text/ends/' + str(i) + ".txt", "w")
+    tr_states = open('data/ends/' + str(i) + ".txt", "w")
 
     for state in loop:
 

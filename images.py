@@ -36,7 +36,7 @@ for aline1 in nodes:
     aline1 = aline1.split()[0]
     
     p_state = 0
-    
+    plt.figure()
     for st in aline1:
         
         nm_model = lst_model_nm[p_state]
