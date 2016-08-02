@@ -1,0 +1,354 @@
+ATM  0  4N_DNA
+CAD  0  4N_DNA
+4N_DNA  1  4N_DNA
+Cdh1  0  4N_DNA
+CyclinA  1  4N_DNA
+Replication  1  4N_DNA
+
+PIP3  1  AKT
+PDK1  1  AKT
+
+Wip1  0  ATM
+DSBF  1  ATM
+
+Mild_DNA_Lesions  1  ATR
+DNA_Lesions  1  ATR
+
+ERK  0  BAD
+Cdk1  1  BAD
+AKT  0  BAD
+
+PUMA  1  BAK
+BID  1  BAK
+BCLXL  0  BAK
+BCL2  0  BAK
+
+BID  1  BAX
+p16  0  BAX
+PUMA  1  BAX
+BIM  1  BAX
+BCLXL  0  BAX
+BCL2  0  BAX
+
+Noxa  0  BCL2
+BAD  0  BCL2
+Casp3  0  BCL2
+
+Noxa  0  BCLXL
+BAD  0  BCLXL
+Casp3  0  BCLXL
+
+Casp8  1  BID
+MCL-1  0  BID
+BCL2  0  BID
+
+GSK3  1  BIM
+MCL-1  0  BIM
+CAD  0  BIM
+BCLXL  0  BIM
+BCL2  0  BIM
+
+Ras  1  BRAF
+
+CHK2  1  BRCA1
+ATM  1  BRCA1
+
+Casp3  1  CAD
+Casp9  1  CAD
+
+IAPs  0  Casp3
+Casp8  1  Casp3
+Casp9  1  Casp3
+Casp3  1  Casp3
+
+DR4_5  1  Casp8
+Casp3  1  Casp8
+
+IAPs  0  Casp9
+Cyto_C  1  Casp9
+Casp3  1  Casp9
+
+pAPC  1  Cdc20
+Cdh1  0  Cdc20
+Mad2  0  Cdc20
+
+CHK2  0  Cdc25A
+CyclinA  1  Cdc25A
+E2F1  1  Cdc25A
+CyclinE  1  Cdc25A
+Cdh1  0  Cdc25A
+
+CHK2  0  Cdc25C
+CHK1  0  Cdc25C
+CyclinA  1  Cdc25C
+Cdk1  1  Cdc25C
+CyclinB  1  Cdc25C
+
+CyclinA  0  Cdh1
+CyclinB  0  Cdh1
+Cdk1  0  Cdh1
+
+CHK2  0  Cdk1
+CHK1  0  Cdk1
+Wee1  0  Cdk1
+Cdc25C  1  Cdk1
+Cdk1  1  Cdk1
+CyclinA  1  Cdk1
+CyclinB  1  Cdk1
+
+BRCA1  1  CHK1
+ATR  1  CHK1
+
+ATR  1  CHK2
+ATM  1  CHK2
+Wip1  0  CHK2
+
+E2F1  1  CyclinA
+CyclinA  1  CyclinA
+Cdc25A  1  CyclinA
+pAPC  0  CyclinA
+Cdh1  0  CyclinA
+UbcH10  0  CyclinA
+
+Cdk1  1  CyclinB
+CyclinB  1  CyclinB
+CyclinA  1  CyclinB
+pAPC  0  CyclinB
+Cdc20  0  CyclinB
+Cdh1  0  CyclinB
+
+p16  0  CyclinD1
+Replication  0  CyclinD1
+CyclinD1  1  CyclinD1
+p21  0  CyclinD1
+GSK3  0  CyclinD1
+pRB  0  CyclinD1
+E2F1  1  CyclinD1
+Myc  1  CyclinD1
+
+Cdh1  1  CyclinE
+Metaphase  0  CyclinE
+p27Kip1  0  CyclinE
+pRB  0  CyclinE
+E2F1  1  CyclinE
+
+p53AIP1  1  Cyto_C
+BAK  1  Cyto_C
+BAX  1  Cyto_C
+
+CAD  1  DNA_Lesions
+Slow_repair  0  DNA_Lesions
+Fast_repair  0  DNA_Lesions
+UV  1  DNA_Lesions
+Mild_DNA_Lesions  1  DNA_Lesions
+DNA_Lesions  1  DNA_Lesions
+
+Trail  1  DR4_5
+
+BRCA1  1  DS_repair
+Ph_p53  1  DS_repair
+ATM  1  DS_repair
+
+CAD  1  DSBF
+DS_repair  0  DSBF
+Senescence  1  DSBF
+Gamma  1  DSBF
+DSBF  1  DSBF
+
+CyclinA  0  E2F1
+E2F1  1  E2F1
+Myc  1  E2F1
+pRB  0  E2F1
+
+mTORC1  1  eIF4E
+
+MEK  1  ERK
+
+DNA_Lesions  1  Fast_repair
+Mild_DNA_Lesions  1  Fast_repair
+BRCA1  1  Fast_repair
+ATR  1  Fast_repair
+
+Gamma  1  Gamma
+
+GF_High  1  GF
+GF  1  GF
+
+GF_High  1  GF_High
+
+GF_High  1  Grb2
+RTK  1  Grb2
+
+AKT  0  GSK3
+
+SMAC  0  IAPs
+
+4N_DNA  1  Mad2
+Metaphase  0  Mad2
+pAPC  0  Mad2
+Cdc20  0  Mad2
+Cdk1  1  Mad2
+CyclinB  1  Mad2
+
+Casp3  0  MCL-1
+Noxa  0  MCL-1
+E2F1  0  MCL-1
+ERK  1  MCL-1
+
+Ph_p53  1  Mdm2_mRNA
+N_p53  1  Mdm2_mRNA
+
+ATM  0  Mdm2_Pr
+Mdm2_mRNA  1  Mdm2_Pr
+ATR  0  Mdm2_Pr
+AKT  1  Mdm2_Pr
+
+BRAF  1  MEK
+
+4N_DNA  1  Metaphase
+pAPC  0  Metaphase
+Cdc20  0  Metaphase
+Cdk1  1  Metaphase
+CyclinB  1  Metaphase
+
+CAD  1  Mild_DNA_Lesions
+DS_repair  1  Mild_DNA_Lesions
+Replication  1  Mild_DNA_Lesions
+Fast_repair  0  Mild_DNA_Lesions
+Slow_repair  0  Mild_DNA_Lesions
+UV  1  Mild_DNA_Lesions
+Mild_DNA_Lesions  1  Mild_DNA_Lesions
+
+ERK  1  mTORC1
+E2F1  1  mTORC1
+AKT  1  mTORC1
+
+Myc  1  Myc
+eIF4E  1  Myc
+AKT  2  Myc
+ERK  1  Myc
+E2F1  1  Myc
+
+N_p53  2  N_p53
+
+p53_Ser46_H  1  Noxa
+
+Senescence  1  p16
+
+Ph_p53  1  p21
+p21_mRNA  1  p21
+CyclinA  0  p21
+Cdc25A  0  p21
+CyclinE  0  p21
+
+p53_Ser46_L  1  p21_mRNA
+p53_Ser46_H  1  p21_mRNA
+Myc  0  p21_mRNA
+Ph_p53  1  p21_mRNA
+N_p53  1  p21_mRNA
+
+CyclinA  0  p27Kip1
+Cdk1  0  p27Kip1
+CyclinB  0  p27Kip1
+CyclinD1  0  p27Kip1
+CyclinE  0  p27Kip1
+
+Wip1  0  p53_Ser46_H
+p53DINP1_H  1  p53_Ser46_H
+Ph_p53  1  p53_Ser46_H
+DNA_Lesions  1  p53_Ser46_H
+p53DINP1_L  1  p53_Ser46_H
+p53_Ser46_L  1  p53_Ser46_H
+
+p53_Ser46_H  1  p53_Ser46_L
+DNA_Lesions  1  p53_Ser46_L
+p53DINP1_H  1  p53_Ser46_L
+Ph_p53  1  p53_Ser46_L
+
+p53_Ser46_H  1  p53AIP1
+
+p53_Ser46_H  1  p53DINP1_H
+
+p53_Ser46_H  1  p53DINP1_L
+p53DINP1_H  1  p53DINP1_L
+p53_Ser46_L  1  p53DINP1_L
+
+pAPC  1  pAPC
+Cdc20  1  pAPC
+Cdk1  1  pAPC
+CyclinB  1  pAPC
+
+PIP3  1  PDK1
+
+ATM  1  Ph_p53
+N_p53  1  Ph_p53
+Wip1  0  Ph_p53
+Mdm2_Pr  0  Ph_p53
+ATR  1  Ph_p53
+
+Ras  1  PI3K
+RTK  1  PI3K
+
+PTEN  0  PIP3
+PI3K  1  PIP3
+
+CyclinA  0  pRB
+Cdk1  0  pRB
+CyclinB  0  pRB
+CyclinD1  0  pRB
+CyclinE  0  pRB
+p27Kip1  1  pRB
+
+p53_Ser46_H  1  PTEN
+
+p53_Ser46_H  1  PUMA
+
+Grb2  1  Ras
+SOS  1  Ras
+
+E2F1  1  Replication
+CAD  0  Replication
+4N_DNA  0  Replication
+CyclinE  1  Replication
+Cdc25A  1  Replication
+Replication  1  Replication
+
+GF_High  1  RTK
+GF  1  RTK
+
+CAD  0  Senescence
+Ph_p53  1  Senescence
+mTORC1  1  Senescence
+pRB  1  Senescence
+Senescence  1  Senescence
+p16  1  Senescence
+
+DNA_Lesions  1  Slow_repair
+Mild_DNA_Lesions  2  Slow_repair
+Ph_p53  1  Slow_repair
+ATR  1  Slow_repair
+
+BAK  1  SMAC
+BAX  1  SMAC
+
+Grb2  1  SOS
+
+Trail  2  Trail
+
+Cdh1  0  UbcH10
+Cdc20  1  UbcH10
+UbcH10  1  UbcH10
+CyclinA  1  UbcH10
+CyclinB  1  UbcH10
+
+UV  2  UV
+
+CHK1  1  Wee1
+CAD  1  Wee1
+Replication  1  Wee1
+Cdk1  0  Wee1
+CyclinA  0  Wee1
+CyclinB  0  Wee1
+
+Ph_p53  1  Wip1
+

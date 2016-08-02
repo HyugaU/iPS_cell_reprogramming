@@ -1,39 +1,29 @@
 import glob
 import numpy as np
 import matplotlib.pyplot as plt
+import dynamics.functions
+import csv
 
 # import files
-datafile = open('/Users/hyuga/Documents/iPS/Files/datafile.txt', "r")
-nodes = open('/Users/hyuga/Documents/iPS/Files/nodes.txt', "r")
+loops = open('data/andrewmodel_data/loopfile.txt', "r")
+dead = open('data/andrewmodel_data/deadfile.txt', "r")
 
 # create a list of name of models in order
-lst_model_nm = []
-for filename in glob.glob('/Users/hyuga/Dropbox/Regan_Group/toy_model/Andrew_lastmodel_WT/*'):
-    
-    fIn = open(filename, "r")
-    
-    n_lines = 0
-    
-    for aline in fIn:
-        
-        if n_lines == 0:
-            lst = aline.split()
-            nm = lst[-1]
-            lst_model_nm.append(nm)
-            
-            n_lines += 1
-            
-    fIn.close()
+lst_model_nm = dynamics.functions.get_lst_models()
    
 # radius
 r = 40
 
 # number of node
-n_node = 0
+n_dead = 0
+
+#list of lists of csv data
+lst_lst_output = []
 
 # every time you look at a node in the file
-for aline1 in nodes:    
-    aline1 = aline1.split()[0]
+for aline1 in dead:    
+    aline1 = aline1.strip()
+    lst_output = []
     
     p_state = 0
     plt.figure()
@@ -47,7 +37,7 @@ for aline1 in nodes:
         elif st == '1':
             color = 'red'
         
-        datafile = open('/Users/hyuga/Documents/iPS/Files/datafile.txt', "r")
+        datafile = open('data/andrew_view.txt', "r")
         
         for aline2 in datafile:
 
@@ -73,16 +63,147 @@ for aline1 in nodes:
         p_state += 1
 
     #draw the number of the node as title
-    plt.title(n_node, fontsize=10)
+    plt.title(n_dead, fontsize=10)
+
+    gf = dynamics.functions.check_model('GF', aline1)
+    gfh = dynamics.functions.check_model('GF_High', aline1)
+    trail = dynamics.functions.check_model('Trail', aline1)
+    uv = dynamics.functions.check_model('UV', aline1)
+    cdh1 = dynamics.functions.check_model('Cdh1', aline1)
+    cycA = dynamics.functions.check_model('CyclinA', aline1)
+    cycB = dynamics.functions.check_model('CyclinB', aline1)
+    sene = dynamics.functions.check_model('Senescence', aline1)
+    p16 = dynamics.functions.check_model('p16', aline1)
+
+    phase = dynamics.functions.check_phase(cdh1, cycA, cycB)
+    senescence = dynamics.functions.check_sene(sene, p16)
 
     #draw the node as subtitle
-    plt.xlabel(aline1, fontsize=10)
+    plt.xlabel('GF='+gf+','+ 'GFh='+gfh+',' +'Trail='+trail+',' + 'UV='+uv+','
+        +'Dead='+'1'+',' 'Senescence='+str(senescence)+',' + 'CC='+'0'+',' 
+        +'Phase='+phase+',' + 'Other cycle='+'/', fontsize=10)
+
+    lst_output.append(gf), lst_output.append(gfh), lst_output.append(trail), lst_output.append(uv), lst_output.append('1'),
+    lst_output.append(senescence), lst_output.append('0'), lst_output.append(phase), lst_output.append('/')
+
+    lst_lst_output.append(lst_output)
 
     # plt.show()
-    plt.savefig('/Users/hyuga/Documents/iPS/graphics/image_node/' + str(n_node), dpi=300)
+    plt.savefig('images/dead_andrew/' + str(n_dead), dpi=300)
        
-    n_node += 1
+    n_dead += 1
 
-nodes.close()
+dead.close()
+
+n_loop = 0
+p_loop = 0
+
+lst_cc = []
+
+for aline in loops:
+    aline = aline.strip()
+    lst_cyle = []
+    if aline == '':
+        cc = dynamics.functions.check_cc(lst_cyle)
+        lst_cc.append(cc)
+        lst_cyle = []
+    else:
+        lst_cyle.append(aline)
+loops.close()
+
+loops = open('data/andrewmodel_data/loopfile.txt', "r")
+p_cc = 0
+
+for aline1 in loops: 
+
+    plt.figure() 
+    aline1 = aline1.strip()
+    cc = lst_cc[p_cc]
+    lst_output = []
+
+    if cc == 1:
+        occ = 0
+    else:
+        occ = 1
+
+    if aline1 == '':
+
+        n_loop += 1
+        p_loop = 0
+        p_cc += 1
+
+        lst_output.append(gf), lst_output.append(gfh), lst_output.append(trail), lst_output.append(uv), lst_output.append('0'),
+        lst_output.append('/'), lst_output.append(cc), lst_output.append('/'), lst_output.append(occ)
+
+        lst_lst_output.append(lst_output)
+
+    else: 
+        p_state = 0
+        for st in aline1:
+            nm_model = lst_model_nm[p_state]
+
+            if st == '0':
+                color = 'blue'
+                
+            elif st == '1':
+                color = 'red'
+            
+            datafile = open('data/andrew_view.txt', "r")
+            
+            for aline2 in datafile:
+
+                data_line = aline2.split()
+                
+                nm = data_line[0]
+                px = data_line[1]
+                py = data_line[2]
+                
+                if nm == nm_model:
+                    
+                    x = float(px) * 1.5
+                    y = float(py) * (-1) * 1.5
+                    
+            datafile.close()
+
+
+               
+            #draw a circle  
+            plt.scatter(x, y, s=r, c=color, alpha=0.5)
+
+            #draw the name of the circle
+            plt.text(x, y+50, nm_model, fontsize=5)
+                    
+            p_state += 1
+
+        #draw the number of the node as title
+        plt.title(str(n_loop)+ '/' +str(p_loop), fontsize=10)
+
+        gf = dynamics.functions.check_model('GF', aline1)
+        gfh = dynamics.functions.check_model('GF_High', aline1)
+        trial = dynamics.functions.check_model('Trail', aline1)
+        uv = dynamics.functions.check_model('UV', aline1)
+
+        #draw the node as subtitle
+        plt.xlabel('GF='+gf+','+ 'GFh='+gfh+',' +'Trail='+trail+',' + 'UV='+uv+','
+        +'Dead='+'0'+',' 'Senescence='+'/'+',' + 'CC='+str(cc)+',' 
+        +'Phase='+'/'+',' + 'Other cycle='+str(occ) 
+        ,fontsize=10)
+
+        # plt.show()
+        plt.savefig('images/loop_andrew/' + str(n_loop)+ ':' + str(p_loop), dpi=300)
+           
+        p_loop += 1
+
+#write a csv file
+label = ["GF", "GFh", "Trail", "UV", "Dead", "Senescence", "Cell Cycle", "Phase", "Other Cycle"]
+
+filen = "output.csv"
+with open(filen, "w") as f:
+    writer = csv.writer(f)
+    writer.writerow(label)
+    for output in lst_lst_output:
+        writer.writerow(output)
+
+loops.close()
     
     

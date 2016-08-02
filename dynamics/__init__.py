@@ -1,27 +1,33 @@
+# create a method for a dynamis
 class Dynamics:
     def __init__(self):
-        self.nObject = []
-        self.d_Object = {}
+        self.nm_model = []
+        self.models = {}
 
-    def addnObject(self, objct):
-        self.nObject.append(objct)
+    def add_nm_model(self, module):
+        self.nm_model.append(module)
 
-    def addd_Object(self, key, value):
-        self.d_Object[key] = value
+    def add_model(self, nm_model, status):
+        self.models[nm_model] = status
 
-    def getnObject(self):
-        return self.nObject
+    def get_lst_nm_models(self):
+        return self.nm_model
 
-    def getd_Object(self):
-        return self.d_Object
+    def get_models(self):
+        return self.models
 
-    def shownmObjects(self):
-        for o in self.nObject:
-            return o
+# create a method for each model
+class Model:
+    def __init__(self, name, d_rls, lst_ams):
+        self.name = name
+        self.rls = d_rls
+        self.lst_ams = lst_ams
 
-    def __str__(self):
-        return "name object is : " + str(self.nObject) + "\n dictionary object is : " + str(self.d_Object)
+    def getname(self):
+        return self.name
 
+    def getD(self):
+        return self.rls
 
-def f_example():
-    print("this is from init file")
+    def getL(self):
+        return self.lst_ams
