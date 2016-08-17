@@ -6,7 +6,7 @@ import dynamics
 D = dynamics.Dynamics()
 
 # open the file that you have the causal relationsions
-dyn = open('data/andrew_dynamics.txt', "w")
+dyn = open('data/dynamics.txt', "w")
 
 # open the writing file that you save the numberical data
 #network = open('data/network.txt', "w")
@@ -46,18 +46,9 @@ for filename in glob.glob('data/AndrewModel_After_SBHD_Aug1_2016/*.csv'):
             lst_nm_1line.pop()
 
             # create a list of names of affecting models
-            lstOfNofAOs = lst_nm_1line
+            lst_n_affs = lst_nm_1line
 
-            # count number of objects in a file
-            nOfkeys = len(lstOfNofAOs)
-
-            # make a dictionary of sum of the number of the target object when the affecting object is off
-            lstOfSoff = {}
-
-            # make a dictionary of sum of the number of the traget object when the affecting object is on
-            lstOfSon = {}
-
-            for ob in lstOfNofAOs:
+            for ob in lst_n_affs:
                 # add the name of the affecting object to the key of the dictionary
                 d_outp_off[ob] = 0
                 d_outp_on[ob] = 0
@@ -66,48 +57,48 @@ for filename in glob.glob('data/AndrewModel_After_SBHD_Aug1_2016/*.csv'):
         elif n_line > 0:
 
             # make a list of states of every object
-            lstOfstates = aline.split()
+            lst_states = aline.split()
 
             # output from the previous condition
-            value = int(lstOfstates[-1])
+            value = int(lst_states[-1])
 
             # creates a list of states of affecting objects
-            lstOfstates.pop()
+            lst_states.pop()
 
-            lst_S_AOs = lstOfstates
+            lst_states_affs = lst_states
 
             # the previous condition
             key = ""
 
             # make the previous condition
-            for s in lst_S_AOs:
+            for s in lst_states_affs:
                 key = key + s
 
             # add the output to the dictionary
             d_rls[key] = value
 
             # every time you see the affecting object, you check the output of the target object
-            for ob in lstOfNofAOs:
+            for ob in lst_n_affs:
 
-                # the positon of the object
-                pOfAOs = lstOfNofAOs.index(ob)
+                # the index of the model
+                index_aff = lst_n_affs.index(ob)
 
                 # state of the affecting object
-                SofAO = lst_S_AOs[pOfAOs]
+                state_aff = lst_states_affs[index_aff]
 
                 # if the affecting object is off
-                if SofAO == "0":
+                if state_aff == "0":
                     d_outp_off[ob] += value
 
                 # if the affeting object is on
-                elif SofAO == "1":
+                elif state_aff == "1":
                     d_outp_on[ob] += value
 
         # add 1 to the count of the line
         n_line += 1
 
     # each affecing object
-    for ob in lstOfNofAOs:
+    for ob in lst_n_affs:
 
         # if the Sum of the output when the affecing object is off is greater than on
         if d_outp_off[ob] > d_outp_on[ob]:
@@ -134,7 +125,7 @@ for filename in glob.glob('data/AndrewModel_After_SBHD_Aug1_2016/*.csv'):
     dyn.write("\n")
 
     # create a new instance
-    p = dynamics.Model(nm_model_file, d_rls, lstOfNofAOs)
+    p = dynamics.Model(nm_model_file, d_rls, lst_n_affs)
 
     # add name of the model to the list of the dynamics
     D.add_nm_model(nm_model_file)
@@ -168,20 +159,20 @@ lst_all_seq = []
 #if the end is dead or not
 che_loop = True
 
-nOFinput = 300000
+n_input = 200000
 
 count = 0
 
-for i in range(nOFinput):
+for i in range(n_input):
 
-    # create a dictionary of the state of each object at the time
-    dOfs = {}
+    # create a dictionary of the state of each node at the time
+    s_states = {}
 
     # create the initial
-    Istate = ""
+    initial_state = ""
 
     # create a list of existed states
-    lst_Exs = []
+    lst_existed_states = []
 
     #a loop
     loop = []
@@ -192,93 +183,99 @@ for i in range(nOFinput):
         i = random.randint(0, 1)
 
         # add the intial state to the dictionary
-        dOfs[m] = i
+        s_states[m] = i
 
         # conjugate the initial state of each
-        Istate = Istate + str(i)
+        initial_state = initial_state + str(i)
 
-    while Istate in lst_all_seq:
+    while initial_state in lst_all_seq:
         for m in lst_all_models:
             # take input by the module
             i = random.randint(0, 1)
 
             # add the intial state to the dictionary
-            dOfs[m] = i
+            s_states[m] = i
 
             # conjugate the initial state of each
-            Istate = Istate + str(i)
+            initial_state = initial_state + str(i)
 
     # add the initial state to the list of all sequences
-    lst_all_seq.append(Istate)
+    lst_all_seq.append(initial_state)
 
     # create the whole state of the time
-    WholeS = ""
+    whole_state = ""
 
-    Wholes = Istate
+    #add the intial state to the list of existed sequences
+    whole_state = initial_state
 
     # the value of the node
     end = ""
 
-    while WholeS not in lst_Exs:
+    #until the state is the same as one in the list
+    while whole_state not in lst_existed_states:
 
-        # add a new whole state to the memory
-        lst_Exs.append(WholeS)
+        lst_existed_states.append(whole_state)
 
-        WholeS = ""
+        whole_state = ""
 
-        # find new states of every object
+        # find new states of every model
         for m in lst_all_models:
 
             # create a string of previous state of affecting objects
-            pS_AOs = ""
+            pre_state_affs = ""
 
             # create a list of names of affecting objects
-            lst_nm_AOs = D.get_models()[m].getL()
+            lst_nm_affs = D.get_models()[m].getL()
 
             # create a dictionary of the relationship between previous and new state of the object
             d_pn = D.get_models()[m].getD()
 
             # looking at the state of each affecting object
-            for ao in lst_nm_AOs:
+            for ao in lst_nm_affs:
                 # the previous state of each affecting object
-                pS_AO = dOfs[ao]
+                pre_state_aff = s_states[ao]
 
                 # conjugate the state of the previous stage
-                pS_AOs += str(pS_AO)
+                pre_state_affs += str(pre_state_aff)
 
             # create the new state of the node
-            ns_n = d_pn[pS_AOs]
+            ns_m = d_pn[pre_state_affs]
 
-            # update the dictionary of the states of all
-            dOfs[m] = ns_n
 
             # create a new whole state
-            WholeS = WholeS + str(ns_n)
+            whole_state = whole_state + str(ns_m)
+
+
+        i = 0
+        for node in lst_all_models:
+            s_states[node] = whole_state[i]
+            i += 1
+
 
         # add the state to the list of all sequence
-        lst_all_seq.append(WholeS)
+        lst_all_seq.append(whole_state)
 
     # define the final state
-    end = WholeS
+    end = whole_state
 
     #check the end associate with a loop or dead
-    if end == lst_Exs[-1]:
+    if end == lst_existed_states[-1]:
         che_loop = False
 
     else:
         che_loop = True
 
         #position of starting point
-        p_star = lst_Exs.index(end)
+        p_star = lst_existed_states.index(end)
 
-        for l in lst_Exs[p_star:]:
+        for l in lst_existed_states[p_star:]:
             loop.append(l)
 
     # write the inital state on the top-left of the file
-    #network.write(Istate + " ")
+    #network.write(initial_state + " ")
 
     # find the existed state except initial and final states
-    lst_track = lst_Exs[1:-2]
+    lst_track = lst_existed_states[1:-2]
 
     # every time you have the leading state
     #for state in lst_track:
@@ -296,13 +293,13 @@ for i in range(nOFinput):
         elif che_loop == True:
             lst_loops.append(loop)
 
-        d_ends[end] = lst_Exs
+        d_ends[end] = lst_existed_states
         lst_ends.append(end)
 
     # if the final state is already in the list, the leading states are to be stored in the dictionary
     elif end in lst_ends:
 
-        for s in lst_Exs:
+        for s in lst_existed_states:
 
             if s not in d_ends[end]:
                 d_ends[end].append(s)

@@ -1,6 +1,6 @@
 #open the file
-OpenFile = open("data/andrew_view.xgmml", "r")
-OutFile = open("data/andrew_view.txt", "w")
+OpenFile = open("data/andrewmodel_data/andrew_view.xgmml", "r")
+OutFile = open("data/andrewmodel_data/andrew_view.txt", "w")
 
 #looking at every line
 for aline in OpenFile:
