@@ -10,6 +10,7 @@ dead = open('data/andrewmodel_data/deadfile.txt', "r")
 
 # create a list of name of models in order
 lst_model_nm = dynamics.functions.get_lst_models()
+print (lst_model_nm)
    
 # radius
 r = 40
@@ -25,9 +26,8 @@ for aline1 in dead:
     aline1 = aline1.strip()
     lst_output = []
     
-    p_state = 0
     plt.figure()
-    for st in aline1:
+    for p_state, st in enumerate(aline1):
         
         nm_model = lst_model_nm[p_state]
         
@@ -37,8 +37,12 @@ for aline1 in dead:
         elif st == '1':
             color = 'red'
         
-        datafile = open('data/andrew_view.txt', "r")
+        datafile = open('data/andrewmodel_data/andrew_view.txt', "r")
         
+        # read andrew_view.txt line by line until it finds 
+        # the same name in the line. 
+        x = 0
+        y = 0
         for aline2 in datafile:
 
             data_line = aline2.split()
@@ -46,24 +50,28 @@ for aline1 in dead:
             nm = data_line[0]
             px = data_line[1]
             py = data_line[2]
-            
+
+                   
             if nm == nm_model:
-                
+
                 x = float(px) * 1.5
                 y = float(py) * (-1) * 1.5
-                
+
+                break
+            
         datafile.close()
-           
+        
+        if x == 0 and y == 0:
+            print(p_state,st,nm_model)
         #draw a circle  
         plt.scatter(x, y, s=r, c=color, alpha=0.5)
 
         #draw the name of the circle
         plt.text(x, y+50, nm_model, fontsize=5)
                 
-        p_state += 1
 
     #draw the number of the node as title
-    plt.title(n_dead, fontsize=10)
+    plt.title(n_dead, fontsize=6)
 
     gf = dynamics.functions.check_model('GF', aline1)
     gfh = dynamics.functions.check_model('GF_High', aline1)
@@ -89,7 +97,7 @@ for aline1 in dead:
     lst_lst_output.append(lst_output)
 
     # plt.show()
-    plt.savefig('images/dead_andrew/' + str(n_dead), dpi=300)
+    plt.savefig('../../images/dead_andrew/' + str(n_dead), dpi=300)
        
     n_dead += 1
 
@@ -148,23 +156,20 @@ for aline1 in loops:
             elif st == '1':
                 color = 'red'
             
-            datafile = open('data/andrew_view.txt', "r")
+            datafile = open('data/andrewmodel_data/andrew_view.txt', "r")
             
             for aline2 in datafile:
 
-                data_line = aline2.split()
-                
+                data_line = aline2.split()               
                 nm = data_line[0]
-                px = data_line[1]
-                py = data_line[2]
-                
+ 
                 if nm == nm_model:
-                    
+                    px = data_line[1]
+                    py = data_line[2]
                     x = float(px) * 1.5
                     y = float(py) * (-1) * 1.5
                     
             datafile.close()
-
 
                
             #draw a circle  
@@ -190,7 +195,7 @@ for aline1 in loops:
         ,fontsize=10)
 
         # plt.show()
-        plt.savefig('images/loop_andrew/' + str(n_loop)+ ':' + str(p_loop), dpi=300)
+        plt.savefig('../../images/loop_andrew/' + str(n_loop)+ ':' + str(p_loop), dpi=300)
            
         p_loop += 1
 
